@@ -10,32 +10,44 @@ namespace GameProgramming_TextBasedRPGMap_LucasHardy
     {
         static char[,] mapArray = new char[,] // dimensions defined by following data:
     {
-        {'^','^','^','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
-        {'^','^','`','`','`','`','*','*','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','~','~','~','`','`','`'},
-        {'^','^','`','`','`','*','*','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','~','~','~','`','`','`','`','`'},
-        {'^','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
-        {'`','`','`','`','~','~','~','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
-        {'`','`','`','`','~','~','~','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
-        {'`','`','`','~','~','~','~','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','^','^','`','`','`','`','`','`'},
-        {'`','`','`','`','`','~','~','~','`','`','`','`','`','`','`','`','`','`','`','`','`','^','^','^','^','`','`','`','`','`'},
-        {'`','`','`','`','`','~','~','~','~','`','`','`','`','`','`','`','`','`','`','`','`','`','`','^','^','^','^','`','`','`'},
-        {'`','`','`','`','`','`','`','~','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
-        {'`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
+        {'^','^','^','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','"','"','"','`','`','`'},
+        {'^','^','`','`','`','`','*','*','`','`','`','`','`','`','`','`','`','`','`','`','`','`','"','"','~','~','~','"','`','`'},
+        {'^','^','`','`','`','*','*','`','`','`','`','`','`','`','`','`','`','`','`','`','`','"','~','~','~','"','"','`','`','`'},
+        {'^','`','`','`','"','"','"','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','"','"','"','`','`','`','`','`'},
+        {'`','`','`','"','~','~','~','"','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
+        {'`','`','`','"','~','~','~','"','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
+        {'`','`','"','~','~','~','~','"','`','`','`','`','`','`','`','`','`','`','`','`','`','`','^','^','`','`','`','`','`','`'},
+        {'`','`','`','"','"','~','~','~','"','`','`','`','`','`','`','`','`','`','`','`','`','^','^','^','^','`','`','`','`','`'},
+        {'`','`','`','`','"','~','~','~','~','"','`','`','`','`','`','`','`','`','`','`','`','`','`','^','^','^','^','`','`','`'},
+        {'`','`','`','`','`','"','"','~','"','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
+        {'`','`','`','`','`','`','`','"','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
         {'`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`','`'},
     };
 
-        // usage: map[y, x]
+        static void ShowHUD()
+        {
+            Console.WriteLine();
+            Console.WriteLine("map legend:");
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.WriteLine("^ = mountain");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("` = grass");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("~ = waters");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\" = sand");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("* = tree");
+        }
 
-        // map legend:
-        // ^ = mountain
-        // ` = grass
-        // ~ = water
-        // * = trees
 
         static void Main(string[] args)
         {
-            DisplayMap(2);
+            DisplayMap(3);
+            ShowHUD();
+            Console.ReadKey();
         }
+
         static void DisplayMap()
         {
             string topBottomBorder = "═";
@@ -52,9 +64,9 @@ namespace GameProgramming_TextBasedRPGMap_LucasHardy
                 Console.Write('║');
                 for (int x = 0; x < mapArray.GetLength(1); x++)
                 {
-                    
+                    MapColors(mapArray[y, x]);
                     Console.Write(mapArray[y, x]);
-                    
+                    Console.ResetColor();
 
                 }
                 Console.Write('║');
@@ -80,41 +92,76 @@ namespace GameProgramming_TextBasedRPGMap_LucasHardy
 
             Console.Write("\n");
 
-            for (int y = 0; y < mapArray.GetLength(0) - 1; y++)
+            for (int y = 0; y < mapArray.GetLength(0); y++)
             {
-               
-                Console.Write('║');
 
-                
 
                 for (int i = 0; i < scale; i++)
                 {
-                    
+                    Console.Write('║');
+
+
                     for (int x = 0; x < mapArray.GetLength(1); x++)
                     {
                        
 
                         for (int j = 0; j < scale; j++)
                         {
-                            
+                            MapColors(mapArray[y, x]);
                             Console.Write(mapArray[y, x]);
+                            Console.ResetColor();
                         }
                         
 
 
                     }
+                    Console.Write('║');
+                    Console.Write("\n");
+
+
                 }
 
 
-                Console.Write('║');
 
-                Console.Write("\n");
+
 
 
             }
             for (int i = 0; i < mapArray.GetLength(1) * scale + 2; i++)
             {
                 Console.Write(topBottomBorder);
+            }
+
+            
+        }
+        static void MapColors(char mapCharacter)
+        {
+            if (mapCharacter == '^')
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+            }
+            else if (mapCharacter == '`')
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+
+            }
+            else if (mapCharacter == '~')
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+
+            }
+            else if (mapCharacter == '*')
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+
+            }
+            else if (mapCharacter == '"')
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            }
+            else
+            {
+                Console.ResetColor();
             }
         }
     }
